@@ -6,8 +6,9 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 import { ingredientsSlice } from './ingredients/slice';
+import { burgerConstructorSlice } from './burger-constructor/slice';
 
-const rootReducer = combineSlices(ingredientsSlice);
+const rootReducer = combineSlices(ingredientsSlice, burgerConstructorSlice);
 
 const store = configureStore({
   reducer: rootReducer,

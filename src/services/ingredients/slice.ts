@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 import { getIngredients } from './actions';
 
@@ -32,10 +32,13 @@ export const ingredientsSlice = createSlice({
         state.loading = false;
         state.error = action.error?.message ?? null;
       })
-      .addCase(getIngredients.fulfilled, (state, action) => {
-        state.loading = false;
-        state.ingredients = action.payload;
-      });
+      .addCase(
+        getIngredients.fulfilled,
+        (state, action: PayloadAction<TIngredient[]>) => {
+          state.loading = false;
+          state.ingredients = action.payload;
+        }
+      );
   }
 });
 
