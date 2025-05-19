@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TOrder } from '@utils-types';
 import { orderBurger } from './actions';
 
@@ -21,7 +21,47 @@ const initialState: TConstructorState = {
 export const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
-  reducers: {},
+  reducers: {
+    addIngredient: (state, action) => {
+      if (action.payload.type === 'bun') {
+        state.bun = action.payload;
+      } else {
+        state.ingredients.push(action.payload);
+      }
+    },
+    removeIngredient: (state, action) => {
+      state.ingredients = state.ingredients.filter(
+        (ing) => ing.id !== action.payload
+      );
+    },
+    moveIngredientUp: (state, action: PayloadAction<string>) => {
+      const index = state.ingredients.findIndex(
+        (ing) => ing.id === action.payload
+      );
+      if (index > 0) {
+        [state.ingredients[index], state.ingredients[index - 1]] = [
+          state.ingredients[index - 1],
+          state.ingredients[index]
+        ];
+      }
+    },
+    moveIngredientDown: (state, action: PayloadAction<string>) => {
+      const index = state.ingredients.findIndex(
+        (ing) => ing.id === action.payload
+      );
+      if (index < state.ingredients.length - 1) {
+        [state.ingredients[index], state.ingredients[index + 1]] = [
+          state.ingredients[index + 1],
+          state.ingredients[index]
+        ];
+      }
+    },
+    clearOrderModal: (state) => {
+      state.orderModalData = null;
+      state.bun = null;
+      state.ingredients = [];
+    }
+  },
   selectors: {
     getConstructorSelector: (state) => ({
       bun: state.bun,
@@ -45,6 +85,14 @@ export const burgerConstructorSlice = createSlice({
       });
   }
 });
+
+export const {
+  addIngredient,
+  removeIngredient,
+  moveIngredientUp,
+  moveIngredientDown,
+  clearOrderModal
+} = burgerConstructorSlice.actions;
 
 export const {
   getConstructorSelector,
