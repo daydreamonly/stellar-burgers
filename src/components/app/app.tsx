@@ -57,7 +57,6 @@ const App = () => {
           path='/register'
           element={<OnlyUnAuth component={<Register />} />}
         />
-        <Route path='/profile' element={<OnlyAuth component={<Profile />} />} />
         <Route
           path='/forgot-password'
           element={<OnlyUnAuth component={<ForgotPassword />} />}
@@ -66,17 +65,30 @@ const App = () => {
           path='/reset-password'
           element={<OnlyUnAuth component={<ResetPassword />} />}
         />
+        <Route path='/profile' element={<OnlyAuth component={<Profile />} />} />
         <Route
           path='/profile/orders'
           element={<OnlyAuth component={<ProfileOrders />} />}
         />
         <Route path='*' element={<NotFound404 />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        <Route path='/profile/orders/:number' element={<OrderInfo />} />
+        <Route
+          path='/profile/orders/:number'
+          element={<OnlyAuth component={<OrderInfo />} />}
+        />
       </Routes>
 
       {backgroundLocation && (
         <Routes>
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title='' onClose={() => navigate(-1)}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
           <Route
             path='/ingredients/:id'
             element={

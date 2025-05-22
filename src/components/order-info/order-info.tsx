@@ -6,16 +6,19 @@ import { useDispatch, useSelector } from '../../services/store';
 import { getIngredientsSelector } from '../../services/ingredients/slice';
 import { useParams } from 'react-router-dom';
 import { getOrderByNumber } from '../../services/order/actions';
-import { getOrderByNumberSelector } from '../../services/order/slice';
+import {
+  clearOrder,
+  getOrderByNumberSelector
+} from '../../services/order/slice';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
   const dispatch = useDispatch();
   const { number } = useParams();
   const orderData = useSelector(getOrderByNumberSelector);
 
   useEffect(() => {
     if (number) {
+      dispatch(clearOrder());
       dispatch(getOrderByNumber(Number(number)));
     }
   }, [dispatch, number]);

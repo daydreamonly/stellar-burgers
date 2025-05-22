@@ -17,7 +17,11 @@ const initialState: TOrdersState = {
 export const ordersSlice = createSlice({
   name: 'orders',
   initialState,
-  reducers: {},
+  reducers: {
+    clearOrder: (state) => {
+      state.order = null;
+    }
+  },
   selectors: {
     getOrdersSelector: (state) => state.orders,
     getOrderByNumberSelector: (state) => state.order
@@ -45,3 +49,5 @@ export const ordersSlice = createSlice({
 
 export const { getOrdersSelector, getOrderByNumberSelector } =
   ordersSlice.selectors;
+
+export const { clearOrder } = ordersSlice.actions;
