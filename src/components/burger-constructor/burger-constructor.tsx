@@ -9,17 +9,25 @@ import {
   getOrderRequestSelector
 } from '../../services/burger-constructor/slice';
 import { orderBurger } from '../../services/burger-constructor/actions';
+import { getUserSelector } from '../../services/user/slice';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { bun, ingredients } = useSelector(getConstructorSelector);
   const constructorItems = { bun, ingredients };
 
   const orderRequest = useSelector(getOrderRequestSelector);
-
   const orderModalData = useSelector(getOrderModalDataSelector);
+  const user = useSelector(getUserSelector);
 
   const onOrderClick = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
     if (!constructorItems.bun || orderRequest) return;
 
     const ingredientIds = [
